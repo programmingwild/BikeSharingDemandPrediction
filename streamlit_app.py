@@ -274,7 +274,7 @@ else:
     with c2:
         with st.container(border=True):
             st.subheader("💻 Reproduce")
-            st.code("pip install -r requirements.txt\npython src/train.py\npython src/predict.py\nstreamlit run app.py", language="bash")
+            st.code("pip install -r requirements.txt\npython src/train.py\npython src/predict.py\nstreamlit run streamlit_app.py", language="bash")
 
 st.divider()
 st.caption("Bike Sharing Demand · Capital Bikeshare 2011–2012 · UCI / Kaggle · Built with Streamlit")
