@@ -13,8 +13,10 @@ Target: `count`. Metric: RMSLE (log1p).
 
 ## Run
 ```
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 python src/train.py
 python src/predict.py   # -> data/submission.csv
 streamlit run streamlit_app.py
+
+(Use `requirements.txt` alone to run the app; it omits training-only deps.)
 ```
