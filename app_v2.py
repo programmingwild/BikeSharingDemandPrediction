@@ -92,20 +92,26 @@ if page == "Forecast":
             st.caption(f"{DOW[dow]} · " + ("weekend" if dow >= 5 else "weekday"))
 
             v2.label("02 · DAY TYPE")
-            season = st.selectbox("Season", [1, 2, 3, 4],
-                                  index=[1, 2, 3, 4].index(int(s["in_season"])),
-                                  format_func=lambda x: SEASONS[x])
+            v2.label("Season")
+            season = st.radio("Season", [1, 2, 3, 4], horizontal=True,
+                              index=[1, 2, 3, 4].index(int(s["in_season"])),
+                              format_func=lambda x: SEASONS[x], label_visibility="collapsed")
             s["in_season"] = season
-            weather = st.selectbox("Weather", [1, 2, 3, 4],
-                                   index=[1, 2, 3, 4].index(int(s["in_weather"])),
-                                   format_func=lambda x: WEATHER[x])
+            v2.label("Weather")
+            weather = st.radio("Weather", [1, 2, 3, 4], horizontal=True,
+                               index=[1, 2, 3, 4].index(int(s["in_weather"])),
+                               format_func=lambda x: WEATHER[x], label_visibility="collapsed")
             s["in_weather"] = weather
-            holiday = st.segmented_control("Holiday", [0, 1], default=int(s["in_holiday"]),
-                                           format_func=lambda x: "Yes" if x else "No")
+            v2.label("Holiday")
+            holiday = st.radio("Holiday", [0, 1], horizontal=True,
+                               index=int(s["in_holiday"]),
+                               format_func=lambda x: "Yes" if x else "No", label_visibility="collapsed")
             s["in_holiday"] = holiday
             wd_auto = 0 if (holiday == 1 or dow >= 5) else 1
-            workingday = st.segmented_control("Working day", [0, 1], default=wd_auto,
-                                              format_func=lambda x: "Yes" if x else "No")
+            v2.label("Working day")
+            workingday = st.radio("Working day", [0, 1], horizontal=True,
+                                  index=int(s["in_workingday"]) if "in_workingday" in s else wd_auto,
+                                  format_func=lambda x: "Yes" if x else "No", label_visibility="collapsed")
             s["in_workingday"] = workingday
 
             v2.label("03 · CONDITIONS")

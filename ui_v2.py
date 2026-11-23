@@ -70,14 +70,20 @@ hr,[data-testid="stDivider"]{border-color:var(--rule) !important;}
 [data-testid="stButton"] button[kind="primary"],[data-testid="stDownloadButton"] button[kind="primary"]{
   background:var(--ink) !important;color:#fff !important;border-color:var(--ink) !important;
 }
-[data-baseweb="select"] > div,[data-testid="stTextInput"] input,[data-testid="stNumberInput"] input{
-  background:#fff !important;border:1px solid var(--rule2) !important;border-radius:10px !important;color:var(--ink) !important;
+[data-baseweb="select"] > div,[data-testid="stTextInput"] input,[data-testid="stNumberInput"] input,
+[data-testid="stSelectbox"] [role="group"],[data-testid="stDateInputField"],
+[data-testid="stDateInputField"] > div,[data-testid="stDateInputFieldsScroller"]{
+  background:#fff !important;border:1px solid var(--rule2) !important;border-radius:10px !important;
+  color:var(--ink) !important;
 }
-[data-baseweb="select"] input{color:var(--ink) !important;}
+[data-baseweb="select"] input,[data-testid="stSelectbox"] input,
+[data-testid="stDateInputField"] [role="spinbutton"]{color:var(--ink) !important;background:transparent !important;}
+[data-testid="stDateInputField"] svg,[data-testid="stSelectbox"] svg{color:var(--ink) !important;fill:currentColor !important;}
 [data-testid="stSlider"] [data-testid="stSliderThumbValue"]{background:var(--teal) !important;color:#fff !important;font-family:'Manrope',sans-serif !important;font-weight:700 !important;}
 [data-testid="stSlider"] [role="slider"]{box-shadow:0 0 0 4px var(--teal-soft) !important;}
-[data-testid="stButtonGroup"]{background:var(--paper2) !important;border-radius:999px !important;padding:4px !important;gap:4px !important;border:1px solid var(--rule) !important;}
-[data-testid="stButtonGroup"] button{border-radius:999px !important;padding:.35rem .85rem !important;background:transparent !important;border:1px solid transparent !important;color:var(--soft) !important;box-shadow:none !important;}
+[data-testid="stButtonGroup"] > [data-testid="stWidgetLabel"]{display:block !important;margin-bottom:8px !important;}
+[data-testid="stButtonGroup"] > [role="radiogroup"]{background:var(--paper2) !important;border-radius:999px !important;padding:4px !important;gap:4px !important;border:1px solid var(--rule) !important;display:flex !important;width:max-content !important;}
+[data-testid="stButtonGroup"] button{border-radius:999px !important;padding:.35rem .85rem !important;background:transparent !important;border:1px solid transparent !important;color:var(--soft) !important;box-shadow:none !important;height:auto !important;}
 [data-testid="stButtonGroup"] button[aria-pressed="true"],[data-testid="stButtonGroup"] button[aria-checked="true"]{background:var(--ink) !important;color:#fff !important;}
 [data-testid="stAlertContainer"]{background:var(--teal-soft) !important;border:1px solid rgba(14,107,94,.25) !important;border-radius:12px !important;color:var(--ink) !important;}
 [data-testid="stAlertContainer"] p{color:var(--ink) !important;}
