@@ -189,6 +189,30 @@ hr,[data-testid="stDivider"]{border-color:var(--rule) !important;}
 .v2-rank .fill{height:100%;border-radius:99px;background:linear-gradient(90deg,rgba(14,107,94,.35),var(--teal));}
 .v2-rank .score{font-variant-numeric:tabular-nums;text-align:right;color:var(--soft);}
 .v2-rank.best .score{color:var(--teal);font-weight:700;}
+/* Sticky workspace: controls scroll with the page, results stay in view */
+[data-testid="stHorizontalBlock"]:has(#v2-controls){align-items:flex-start !important;}
+[data-testid="stHorizontalBlock"]:has(#v2-controls) > div[data-testid="stColumn"]:last-child{
+  position:sticky !important;top:12px !important;max-height:calc(100vh - 24px) !important;
+  overflow-y:auto !important;overflow-x:hidden !important;padding-right:6px;
+  scrollbar-width:thin;scrollbar-color:var(--rule2) transparent;}
+[data-testid="stHorizontalBlock"]:has(#v2-controls) > div[data-testid="stColumn"]:last-child::-webkit-scrollbar{width:6px;}
+[data-testid="stHorizontalBlock"]:has(#v2-controls) > div[data-testid="stColumn"]:last-child::-webkit-scrollbar-thumb{background:var(--rule2);border-radius:99px;}
+[data-testid="stHorizontalBlock"]:has(#v2-controls) > div[data-testid="stColumn"]:first-child
+  [data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]{padding:18px 20px !important;}
+
+/* Always-visible live readout */
+.v2-hud{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:100;
+  display:flex;align-items:center;gap:16px;background:rgba(255,254,251,.95);
+  border:1px solid var(--rule2);border-radius:999px;padding:9px 20px;
+  box-shadow:0 18px 44px -26px rgba(22,35,31,.55);font-size:.75rem;color:var(--soft);
+  pointer-events:none;white-space:nowrap;}
+.v2-hud b{font-family:'Fraunces',serif;font-size:1.15rem;color:var(--ink);font-variant-numeric:tabular-nums;}
+.v2-hud .hud-peak{color:var(--saffron);font-weight:700;}
+@media(max-width:760px){
+  [data-testid="stHorizontalBlock"]:has(#v2-controls) > div[data-testid="stColumn"]:last-child{
+    position:static !important;max-height:none !important;overflow:visible !important;}
+  .v2-hud{bottom:8px;padding:7px 14px;font-size:.68rem;}
+}
 .v2-footer{text-align:center;color:var(--soft);font-size:.7rem;margin-top:54px;padding-top:20px;border-top:1px solid var(--rule);}
 @keyframes v2-rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .v2-hero{animation:v2-rise .9s cubic-bezier(.22,1,.36,1) both;}
