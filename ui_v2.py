@@ -97,9 +97,9 @@ hr,[data-testid="stDivider"]{border-color:var(--rule) !important;}
 [data-testid="stButtonGroup"] button[aria-pressed="true"] *{color:#fff !important;}
 
 /* Dark-theme leaks: slider */
-[data-testid="stSlider"] .st-emotion-cache-xuq335{
+[data-testid="stSlider"] [class*="e13xtgje5"]{
   background-image:none !important;background:var(--paper2) !important;border-radius:99px !important;}
-[data-testid="stSlider"] .st-emotion-cache-r1tb5r{background:var(--teal) !important;}
+[data-testid="stSlider"] [class*="e13xtgje3"]{background:var(--teal) !important;}
 [data-testid="stSlider"] > div[role="group"]{margin-top:24px !important;}
 [data-testid="stSliderThumbValue"]{
   min-width:26px !important;width:26px !important;left:50% !important;
@@ -107,6 +107,7 @@ hr,[data-testid="stDivider"]{border-color:var(--rule) !important;}
   display:flex !important;align-items:center !important;justify-content:center !important;
   padding:4px 6px !important;border-radius:8px !important;font-size:.78rem !important;font-weight:700 !important;}
 [data-testid="stSliderThumbValue"] p{color:#fff !important;margin:0 !important;font-size:.78rem !important;}
+[data-testid="stSlider"] input[type="range"]{opacity:0 !important;accent-color:var(--teal) !important;}
 
 /* Dark-theme leaks: date picker */
 [data-testid="stDateInputCalendar"]{

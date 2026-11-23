@@ -155,13 +155,9 @@ if page == "Forecast":
 
         with st.container(border=True):
             v2.label("QUICK SCENARIOS")
-            items = list(PRESETS.items())
-            for start in range(0, len(items), 2):
-                pc1, pc2 = st.columns(2)
-                for col, (name, preset) in zip((pc1, pc2), items[start:start + 2]):
-                    with col:
-                        st.button(name, use_container_width=True,
-                                  on_click=apply_preset, args=(preset,))
+            for name, preset in PRESETS.items():
+                st.button(name, use_container_width=True,
+                          on_click=apply_preset, args=(preset,))
 
     temp, atemp, humidity, windspeed = norm(t_c, at_c, hum, wind)
     curve = forecast(d_str, season, holiday, workingday, weather, temp, atemp, humidity, windspeed)
