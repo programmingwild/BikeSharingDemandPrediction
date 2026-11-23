@@ -85,6 +85,49 @@ hr,[data-testid="stDivider"]{border-color:var(--rule) !important;}
 [data-testid="stButtonGroup"] > [role="radiogroup"]{background:var(--paper2) !important;border-radius:999px !important;padding:4px !important;gap:4px !important;border:1px solid var(--rule) !important;display:flex !important;width:max-content !important;}
 [data-testid="stButtonGroup"] button{border-radius:999px !important;padding:.35rem .85rem !important;background:transparent !important;border:1px solid transparent !important;color:var(--soft) !important;box-shadow:none !important;height:auto !important;}
 [data-testid="stButtonGroup"] button[aria-pressed="true"],[data-testid="stButtonGroup"] button[aria-checked="true"]{background:var(--ink) !important;color:#fff !important;}
+/* Widget label text must inherit the button colour, not the global ink colour */
+[data-testid="stButton"] button[kind="primary"] *,[data-testid="stDownloadButton"] button[kind="primary"] *,
+[data-testid="stFileUploaderDropzone"] button *{color:#fff !important;}
+[data-testid="stButton"] button[kind="secondary"] *,[data-testid="stDownloadButton"] button[kind="secondary"] *,
+[data-testid="stButtonGroup"] button *{color:var(--ink) !important;}
+[data-testid="stButtonGroup"] button[aria-checked="true"] *,
+[data-testid="stButtonGroup"] button[aria-pressed="true"] *{color:#fff !important;}
+
+/* Dark-theme leaks: slider */
+[data-testid="stSlider"] .st-emotion-cache-xuq335{
+  background-image:none !important;background:var(--paper2) !important;border-radius:99px !important;}
+[data-testid="stSlider"] .st-emotion-cache-r1tb5r{background:var(--teal) !important;}
+[data-testid="stSliderThumbValue"]{
+  min-width:26px !important;width:26px !important;left:50% !important;
+  transform:translateX(-50%) !important;top:-32px !important;
+  display:flex !important;align-items:center !important;justify-content:center !important;
+  padding:4px 6px !important;border-radius:8px !important;font-size:.78rem !important;font-weight:700 !important;}
+[data-testid="stSliderThumbValue"] p{color:#fff !important;margin:0 !important;font-size:.78rem !important;}
+
+/* Dark-theme leaks: date picker */
+[data-testid="stDateInputCalendar"]{
+  background:#fff !important;border:1px solid var(--rule2) !important;border-radius:12px !important;
+  box-shadow:0 22px 50px -30px rgba(22,35,31,.55) !important;}
+[role="grid"] th,[role="grid"] td,[role="grid"] button{color:var(--ink) !important;}
+[role="gridcell"] > div[data-selected="true"]{background:var(--teal) !important;color:#fff !important;border-radius:8px !important;}
+
+/* Dark-theme leaks: upload dropzone */
+[data-testid="stFileUploaderDropzone"]{
+  background:#fff !important;border:1.5px dashed var(--rule2) !important;border-radius:14px !important;color:var(--ink) !important;}
+[data-testid="stFileUploaderDropzone"] *{color:var(--ink) !important;}
+[data-testid="stFileUploaderDropzone"] button{background:var(--ink) !important;color:#fff !important;border-color:var(--ink) !important;}
+[data-testid="stFileUploaderDropzone"] button p{color:#fff !important;}
+
+/* Dark-theme leaks: code block */
+[data-testid="stCode"] pre{
+  background:#F3F0E8 !important;color:var(--ink) !important;border:1px solid var(--rule) !important;
+  border-radius:12px !important;}
+[data-testid="stCode"] pre code,[data-testid="stCode"] pre code span{color:var(--ink) !important;}
+[data-testid="stCode"] pre code .token{color:var(--teal) !important;}
+[data-testid="stCode"] div[class*="ej556a85"],[data-testid="stCode"] [data-testid="stElementToolbarButton"]{background:transparent !important;}
+[data-testid="stCode"] button{color:var(--soft) !important;background:transparent !important;border:0 !important;}
+[data-testid="stCode"] button p{color:var(--soft) !important;}
+
 [data-testid="stAlertContainer"]{background:var(--teal-soft) !important;border:1px solid rgba(14,107,94,.25) !important;border-radius:12px !important;color:var(--ink) !important;}
 [data-testid="stAlertContainer"] p{color:var(--ink) !important;}
 [data-testid="stMetric"]{background:#fff !important;border:1px solid var(--rule) !important;border-radius:14px !important;padding:14px 16px !important;}
