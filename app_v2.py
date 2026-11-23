@@ -89,8 +89,11 @@ def score_upload(file):
 
 
 v2.masthead()
-page = st.radio("Navigate", ["Forecast", "Batch", "Insights", "About"],
-                horizontal=True, label_visibility="collapsed")
+NAV_OPTIONS = ["Forecast", "Batch", "Insights", "About"]
+requested = st.query_params.get("page", "Forecast")
+nav_index = NAV_OPTIONS.index(requested) if requested in NAV_OPTIONS else 0
+page = st.radio("Navigate", NAV_OPTIONS, horizontal=True, label_visibility="collapsed",
+                index=nav_index, key="nav_page")
 
 if page == "Forecast":
     s = st.session_state
@@ -217,8 +220,8 @@ if page == "Forecast":
 elif page == "Batch":
     v2.hero("bulk scoring", "A city in one file.",
             "Upload hourly records and score every row with the same model used above.",
-            "—", "upload a CSV to begin", [1] * 24,
-            label="FILE READY", unit="awaiting upload")
+            "—", "upload a CSV to begin", None,
+            label="FILE READY", unit="awaiting upload", foot_label="Next step")
     v2.section("Score a file", "CSV columns: datetime, season, holiday, workingday, weather, temp, atemp, humidity, windspeed")
     left, right = st.columns([0.9, 2.1], gap="large")
     with left:
@@ -255,8 +258,8 @@ elif page == "Insights":
     v2.hero("from the training data", "What moves demand.",
             "Ten thousand eight hundred eighty-six hourly records. Hour of day dominates; "
             "weather and holidays write the footnotes.",
-            f"{max(hourly):.0f}", "busiest hour · 17:00", hourly,
-            label="PEAK HOUR AVERAGE", unit="bikes / hour")
+            f"{max(hourly):.0f}", "17:00 · 364 bikes", hourly,
+            label="PEAK HOUR AVERAGE", unit="bikes / hour", foot_label="Busiest hour")
     v2.section("Signals", "the shape behind the predictions")
     c1, c2 = st.columns(2, gap="large")
     with c1:
@@ -276,9 +279,8 @@ else:
     v2.hero("under the hood", "A model, not a mystery.",
             "Gradient-boosted trees learned the hourly rhythm of Capital Bikeshare. "
             "Every number you see is a prediction from that fitted model.",
-            "0.53", "RMSLE · lower is better",
-            [1, 2, 3, 4, 5, 6, 5, 4, 6, 8, 9, 7, 6, 7, 9, 10, 8, 6, 4, 3, 2, 2, 1, 1],
-            label="MODEL ERROR", unit="RMSLE")
+            "0.53", "RMSLE · lower is better", None,
+            label="MODEL ERROR", unit="RMSLE", foot_label="Leaderboard top")
     v2.section("Leaderboard", "held-out hours")
     v2.leaderboard([("Ridge baseline", 1.18, False), ("Random Forest", 0.71, False),
                     ("XGBoost", 0.65, False), ("HistGradientBoosting", 0.53, True)])

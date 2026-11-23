@@ -22,7 +22,8 @@ CSS = r"""
   --rule:rgba(22,35,31,.14); --rule2:rgba(22,35,31,.28);
   --teal:#0E6B5E; --teal-soft:rgba(14,107,94,.10); --saffron:#D99A2B; --saffron-text:#8A5A0B; --saffron-soft:rgba(217,154,43,.14);
 }
-html,body,[class*="st-emotion-cache"]{font-family:'Manrope',system-ui,sans-serif !important;color:var(--ink) !important;}
+html,body,[class*="st-emotion-cache"]:not([data-testid="stIconMaterial"]){font-family:'Manrope',system-ui,sans-serif !important;color:var(--ink) !important;}
+[data-testid="stIconMaterial"]{font-family:"Material Symbols Rounded" !important;font-size:1rem !important;line-height:1 !important;letter-spacing:normal !important;}
 body{background:var(--paper) !important;}
 [data-testid="stAppViewContainer"]{
   background:var(--paper) !important;
@@ -156,9 +157,10 @@ hr,[data-testid="stDivider"]{border-color:var(--rule) !important;}
 .v2-live{background:var(--card);border:1px solid var(--rule);border-radius:18px;padding:26px 28px;box-shadow:0 18px 44px -40px rgba(22,35,31,.45);}
 .v2-live .label{font-size:.7rem;font-weight:700;letter-spacing:.13em;color:var(--soft);}
 .v2-live .number{font-family:'Fraunces',serif;font-size:clamp(3.4rem,6vw,5rem);line-height:1;letter-spacing:-.06em;color:var(--ink);margin:10px 0 0;font-variant-numeric:tabular-nums;}
-.v2-live .unit{font-family:'Manrope',sans-serif;font-size:.82rem;color:var(--soft);margin-left:8px;letter-spacing:0;}
-.v2-live .foot{border-top:1px solid var(--rule);margin-top:18px;padding-top:14px;display:flex;justify-content:space-between;font-size:.75rem;color:var(--soft);}
-.v2-live .foot b{color:var(--saffron-text);font-weight:700;}
+.v2-live .unit{font-family:'Manrope',sans-serif;font-size:.82rem;color:var(--soft);margin-left:12px;letter-spacing:0;display:inline-block;}
+.v2-foot{border-top:1px solid var(--rule);margin-top:18px;padding-top:14px;display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap;font-size:.75rem;color:var(--soft);}
+.v2-foot span{flex:none;}
+.v2-foot b{color:var(--saffron-text);font-weight:700;white-space:normal;text-align:right;}
 .v2-section{display:flex;align-items:baseline;gap:18px;margin:16px 0 20px;}
 .v2-section h2{font-family:'Fraunces',serif;font-size:1.55rem;font-weight:500;margin:0;letter-spacing:-.04em;}
 .v2-section .line{flex:1;height:1px;background:var(--rule);}
@@ -205,7 +207,7 @@ hr,[data-testid="stDivider"]{border-color:var(--rule) !important;}
   [data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]{padding:18px 20px !important;}
 
 /* Always-visible live readout */
-.v2-hud{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:100;
+.v2-hud{position:fixed;right:20px;bottom:16px;z-index:100;
   display:flex;align-items:center;gap:16px;background:rgba(255,254,251,.95);
   border:1px solid var(--rule2);border-radius:999px;padding:9px 20px;
   box-shadow:0 18px 44px -26px rgba(22,35,31,.55);font-size:.75rem;color:var(--soft);
@@ -218,7 +220,7 @@ hr,[data-testid="stDivider"]{border-color:var(--rule) !important;}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important;}}
 
 /* ---------- Responsive: tablet ---------- */
-@media(max-width:1100px){
+@media(max-width:820px){
   [data-testid="stMainBlockContainer"]{padding:24px 24px 80px !important;}
   .v2-hero{grid-template-columns:1fr;gap:28px;}
   .v2-hero .v2-live{max-width:560px;}
@@ -235,11 +237,15 @@ hr,[data-testid="stDivider"]{border-color:var(--rule) !important;}
 @media(max-width:760px){
   [data-testid="stHorizontalBlock"]:has(#v2-controls) > div[data-testid="stColumn"]:last-child{
     position:static !important;max-height:none !important;overflow:visible !important;}
-  .v2-hud{left:8px;right:8px;bottom:8px;transform:none;border-radius:16px;
-    justify-content:center;flex-wrap:wrap;white-space:normal;text-align:center;gap:4px 12px;padding:8px 14px;}
+  .v2-hud{left:auto;right:8px;bottom:8px;transform:none;border-radius:14px;
+    max-width:calc(100% - 16px);width:max-content;justify-content:flex-end;
+    flex-wrap:nowrap;white-space:nowrap;text-align:right;gap:8px;padding:7px 12px;font-size:.66rem;}
 }
 @media(max-width:680px){
   [data-testid="stMainBlockContainer"]{padding:18px 14px 110px !important;}
+  .v2-section{flex-wrap:wrap;gap:6px 10px;}
+  .v2-section .line{display:none;}
+  .v2-section small{flex-basis:100%;line-height:1.5;}
   [data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]{padding:18px !important;border-radius:14px !important;}
   .v2-hero h1{font-size:2.4rem;}
   .v2-masthead{flex-direction:column;align-items:flex-start;gap:12px;}
@@ -283,16 +289,22 @@ def bars(curve, axis: bool = True) -> None:
     st.html(f'<div class="v2-bars">{marks}</div>{axes}')
 
 
-def hero(kicker: str, headline: str, body: str, count, peak: str, curve,
-         label: str = "ESTIMATED DEMAND", unit: str = "bikes / hour") -> None:
-    lo, hi = min(curve), max(curve)
-    span = max(hi - lo, 1e-6)
-    peak_i = max(range(len(curve)), key=lambda i: curve[i])
-    bars_html = "".join(
-        f'<div class="v2-bar{" peak" if i == peak_i else ""}" '
-        f'style="height:{10 + (v - lo) / span * 88:.1f}%"></div>'
-        for i, v in enumerate(curve)
-    )
+def hero(kicker: str, headline: str, body: str, count, peak: str, curve=None,
+         label: str = "ESTIMATED DEMAND", unit: str = "bikes / hour",
+         foot_label: str = "Daily peak") -> None:
+    bars_html = ""
+    if curve:
+        lo, hi = min(curve), max(curve)
+        span = max(hi - lo, 1e-6)
+        peak_i = max(range(len(curve)), key=lambda i: curve[i])
+        bars_html = "".join(
+            f'<div class="v2-bar{" peak" if i == peak_i else ""}" '
+            f'style="height:{10 + (v - lo) / span * 88:.1f}%"></div>'
+            for i, v in enumerate(curve)
+        )
+    bars_block = (f'<div class="v2-bars">{bars_html}</div>'
+                  f'<div class="v2-axis"><span>00</span><span>06</span><span>12</span>'
+                  f'<span>18</span><span>23</span></div>') if curve else ""
     st.html(f"""
 <div class="v2-hero">
   <div>
@@ -303,9 +315,8 @@ def hero(kicker: str, headline: str, body: str, count, peak: str, curve,
   <div class="v2-live">
     <div class="label">{_html.escape(label)}</div>
     <div class="number">{_html.escape(str(count))}<span class="unit">{_html.escape(unit)}</span></div>
-    <div class="v2-bars">{bars_html}</div>
-    <div class="v2-axis"><span>00</span><span>06</span><span>12</span><span>18</span><span>23</span></div>
-    <div class="v2-foot"><span>Daily peak</span><b>{_html.escape(peak)}</b></div>
+    {bars_block}
+    <div class="v2-foot"><span>{_html.escape(foot_label)}</span><b>{_html.escape(peak)}</b></div>
   </div>
 </div>""")
 
