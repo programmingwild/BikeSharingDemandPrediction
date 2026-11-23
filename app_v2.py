@@ -32,6 +32,13 @@ for k, val in DEFAULTS.items():
     st.session_state.setdefault(k, val)
 
 
+def apply_preset(preset):
+    """Runs before widgets are created, so keyed session values can be updated."""
+    for k, val in preset.items():
+        st.session_state[f"in_{k}"] = pd.to_datetime(val).date() if k == "date" else val
+    st.session_state["in_at"] = preset["t_c"] + 2.0  # kept for compatibility
+
+
 @st.cache_resource
 def load_model():
     b = joblib.load("src/model.pkl")
@@ -72,7 +79,7 @@ if page == "Forecast":
     if isinstance(s["in_date"], str):
         s["in_date"] = pd.to_datetime(s["in_date"]).date()
     date0 = pd.to_datetime(s["in_date"]).strftime("%Y-%m-%d")
-    t0, a0, h0, w0 = norm(float(s["in_t"]), float(s["in_at"]),
+    t0, a0, h0, w0 = norm(float(s["in_t"]), float(s["in_t"]) + 2.0,
                           int(s["in_hum"]), int(s["in_wind"]))
     preview = forecast(date0, int(s["in_season"]), int(s["in_holiday"]),
                        int(s["in_workingday"]), int(s["in_weather"]), t0, a0, h0, w0)
@@ -127,14 +134,13 @@ if page == "Forecast":
 
         with st.container(border=True):
             v2.label("QUICK SCENARIOS")
-            pc1, pc2 = st.columns(2)
-            for col, (name, preset) in zip((pc1, pc2), PRESETS.items()):
-                with col:
-                    if st.button(name, use_container_width=True):
-                        for k, val in preset.items():
-                            s[f"in_{k}"] = pd.to_datetime(val).date() if k == "date" else val
-                        s["in_at"] = preset["t_c"] + 2.0
-                        st.rerun()
+            items = list(PRESETS.items())
+            for start in range(0, len(items), 2):
+                pc1, pc2 = st.columns(2)
+                for col, (name, preset) in zip((pc1, pc2), items[start:start + 2]):
+                    with col:
+                        st.button(name, use_container_width=True,
+                                  on_click=apply_preset, args=(preset,))
 
     temp, atemp, humidity, windspeed = norm(t_c, at_c, hum, wind)
     curve = forecast(d_str, season, holiday, workingday, weather, temp, atemp, humidity, windspeed)
