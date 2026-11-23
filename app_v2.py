@@ -69,8 +69,12 @@ page = st.radio("Navigate", ["Forecast", "Batch", "Insights", "About"],
 
 if page == "Forecast":
     s = st.session_state
-    t0, a0, h0, w0 = norm(s["in_t"], s["in_at"], s["in_hum"], s["in_wind"])
-    preview = forecast(s["in_date"], int(s["in_season"]), int(s["in_holiday"]),
+    if isinstance(s["in_date"], str):
+        s["in_date"] = pd.to_datetime(s["in_date"]).date()
+    date0 = pd.to_datetime(s["in_date"]).strftime("%Y-%m-%d")
+    t0, a0, h0, w0 = norm(float(s["in_t"]), float(s["in_at"]),
+                          int(s["in_hum"]), int(s["in_wind"]))
+    preview = forecast(date0, int(s["in_season"]), int(s["in_holiday"]),
                        int(s["in_workingday"]), int(s["in_weather"]), t0, a0, h0, w0)
     ph = int(np.argmax(preview))
     v2.hero("hourly ridership · capital bikeshare 2011–2012",
@@ -87,49 +91,48 @@ if page == "Forecast":
             v2.label("01 · WHEN")
             date_col, hour_col = st.columns(2)
             with date_col:
-                d_str = st.date_input("Date", value=pd.to_datetime(s["in_date"]).date()).strftime("%Y-%m-%d")
-                s["in_date"] = d_str
+                picked = st.date_input("Date", value=pd.to_datetime(s["in_date"]).date(), key="in_date")
+                d_str = pd.to_datetime(picked).strftime("%Y-%m-%d")
                 dow = pd.to_datetime(d_str).dayofweek
             with hour_col:
-                hour = st.slider("Hour", 0, 23, int(s["in_hour"]))
-                s["in_hour"] = hour
+                hour = st.slider("Hour", 0, 23, int(s["in_hour"]), key="in_hour")
             st.caption(f"{DOW[dow]} · " + ("weekend" if dow >= 5 else "weekday"))
 
             v2.label("02 · DAY TYPE")
             v2.label("Season")
             season = st.radio("Season", [1, 2, 3, 4], horizontal=True,
                               index=[1, 2, 3, 4].index(int(s["in_season"])),
-                              format_func=lambda x: SEASONS[x], label_visibility="collapsed")
-            s["in_season"] = season
+                              format_func=lambda x: SEASONS[x], label_visibility="collapsed",
+                              key="in_season")
             v2.label("Weather")
             weather = st.radio("Weather", [1, 2, 3, 4], horizontal=True,
                                index=[1, 2, 3, 4].index(int(s["in_weather"])),
-                               format_func=lambda x: WEATHER[x], label_visibility="collapsed")
-            s["in_weather"] = weather
+                               format_func=lambda x: WEATHER[x], label_visibility="collapsed",
+                               key="in_weather")
             hcol, wcol = st.columns(2)
             with hcol:
                 v2.label("Holiday")
                 holiday = st.radio("Holiday", [0, 1], horizontal=True,
                                    index=int(s["in_holiday"]),
-                                   format_func=lambda x: "Yes" if x else "No", label_visibility="collapsed")
-                s["in_holiday"] = holiday
+                                   format_func=lambda x: "Yes" if x else "No", label_visibility="collapsed",
+                                   key="in_holiday")
             with wcol:
                 wd_auto = 0 if (holiday == 1 or dow >= 5) else 1
                 v2.label("Working day")
                 workingday = st.radio("Working day", [0, 1], horizontal=True,
                                       index=int(s["in_workingday"]) if "in_workingday" in s else wd_auto,
-                                      format_func=lambda x: "Yes" if x else "No", label_visibility="collapsed")
-                s["in_workingday"] = workingday
+                                      format_func=lambda x: "Yes" if x else "No", label_visibility="collapsed",
+                                      key="in_workingday")
 
             v2.label("03 · CONDITIONS")
             tc, hc = st.columns(2)
             with tc:
-                t_c = st.slider("Temperature °C", -8.0, 39.0, float(s["in_t"]))
+                t_c = st.slider("Temperature °C", -8.0, 39.0, float(s["in_t"]), key="in_t")
             with hc:
-                hum = st.slider("Humidity %", 0, 100, int(s["in_hum"]))
-            wind = st.slider("Wind", 0, 67, int(s["in_wind"]))
+                hum = st.slider("Humidity %", 0, 100, int(s["in_hum"]), key="in_hum")
+            wind = st.slider("Wind", 0, 67, int(s["in_wind"]), key="in_wind")
             at_c = t_c + 2.0
-            s.update(in_t=t_c, in_at=at_c, in_hum=hum, in_wind=wind)
+            s["in_at"] = at_c
 
         with st.container(border=True):
             v2.label("QUICK SCENARIOS")
@@ -138,7 +141,7 @@ if page == "Forecast":
                 with col:
                     if st.button(name, use_container_width=True):
                         for k, val in preset.items():
-                            s[f"in_{k}"] = val
+                            s[f"in_{k}"] = pd.to_datetime(val).date() if k == "date" else val
                         s["in_at"] = preset["t_c"] + 2.0
                         st.rerun()
 
