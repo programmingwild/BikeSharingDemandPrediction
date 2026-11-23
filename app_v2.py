@@ -89,13 +89,10 @@ if page == "Forecast":
         st.html('<div id="v2-controls" style="height:0"></div>')
         with st.container(border=True):
             v2.label("01 · WHEN")
-            date_col, hour_col = st.columns(2)
-            with date_col:
-                picked = st.date_input("Date", value=pd.to_datetime(s["in_date"]).date(), key="in_date")
-                d_str = pd.to_datetime(picked).strftime("%Y-%m-%d")
-                dow = pd.to_datetime(d_str).dayofweek
-            with hour_col:
-                hour = st.slider("Hour", 0, 23, int(s["in_hour"]), key="in_hour")
+            picked = st.date_input("Date", value=pd.to_datetime(s["in_date"]).date(), key="in_date")
+            d_str = pd.to_datetime(picked).strftime("%Y-%m-%d")
+            dow = pd.to_datetime(d_str).dayofweek
+            hour = st.slider("Hour", 0, 23, int(s["in_hour"]), key="in_hour")
             st.caption(f"{DOW[dow]} · " + ("weekend" if dow >= 5 else "weekday"))
 
             v2.label("02 · DAY TYPE")
@@ -109,27 +106,21 @@ if page == "Forecast":
                                index=[1, 2, 3, 4].index(int(s["in_weather"])),
                                format_func=lambda x: WEATHER[x], label_visibility="collapsed",
                                key="in_weather")
-            hcol, wcol = st.columns(2)
-            with hcol:
-                v2.label("Holiday")
-                holiday = st.radio("Holiday", [0, 1], horizontal=True,
-                                   index=int(s["in_holiday"]),
-                                   format_func=lambda x: "Yes" if x else "No", label_visibility="collapsed",
-                                   key="in_holiday")
-            with wcol:
-                wd_auto = 0 if (holiday == 1 or dow >= 5) else 1
-                v2.label("Working day")
-                workingday = st.radio("Working day", [0, 1], horizontal=True,
-                                      index=int(s["in_workingday"]) if "in_workingday" in s else wd_auto,
-                                      format_func=lambda x: "Yes" if x else "No", label_visibility="collapsed",
-                                      key="in_workingday")
+            v2.label("Holiday")
+            holiday = st.radio("Holiday", [0, 1], horizontal=True,
+                               index=int(s["in_holiday"]),
+                               format_func=lambda x: "Yes" if x else "No", label_visibility="collapsed",
+                               key="in_holiday")
+            wd_auto = 0 if (holiday == 1 or dow >= 5) else 1
+            v2.label("Working day")
+            workingday = st.radio("Working day", [0, 1], horizontal=True,
+                                  index=int(s["in_workingday"]) if "in_workingday" in s else wd_auto,
+                                  format_func=lambda x: "Yes" if x else "No", label_visibility="collapsed",
+                                  key="in_workingday")
 
             v2.label("03 · CONDITIONS")
-            tc, hc = st.columns(2)
-            with tc:
-                t_c = st.slider("Temperature °C", -8.0, 39.0, float(s["in_t"]), key="in_t")
-            with hc:
-                hum = st.slider("Humidity %", 0, 100, int(s["in_hum"]), key="in_hum")
+            t_c = st.slider("Temperature °C", -8.0, 39.0, float(s["in_t"]), key="in_t")
+            hum = st.slider("Humidity %", 0, 100, int(s["in_hum"]), key="in_hum")
             wind = st.slider("Wind", 0, 67, int(s["in_wind"]), key="in_wind")
             at_c = t_c + 2.0
             s["in_at"] = at_c

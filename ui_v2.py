@@ -79,6 +79,8 @@ hr,[data-testid="stDivider"]{border-color:var(--rule) !important;}
 [data-baseweb="select"] input,[data-testid="stSelectbox"] input,
 [data-testid="stDateInputField"] [role="spinbutton"]{color:var(--ink) !important;background:transparent !important;}
 [data-testid="stDateInputField"] svg,[data-testid="stSelectbox"] svg{color:var(--ink) !important;fill:currentColor !important;}
+[data-testid="stWidgetLabel"] p{white-space:normal !important;overflow-wrap:anywhere !important;}
+[data-testid="stDateInputField"] [role="spinbutton"]{min-width:32px !important;padding:0 3px !important;font-size:.82rem !important;}
 [data-testid="stSlider"] [data-testid="stSliderThumbValue"]{background:var(--teal) !important;color:#fff !important;font-family:'Manrope',sans-serif !important;font-weight:700 !important;}
 [data-testid="stSlider"] [role="slider"]{box-shadow:0 0 0 4px var(--teal-soft) !important;}
 [data-testid="stButtonGroup"] > [data-testid="stWidgetLabel"]{display:block !important;margin-bottom:8px !important;}
@@ -97,9 +99,10 @@ hr,[data-testid="stDivider"]{border-color:var(--rule) !important;}
 [data-testid="stSlider"] .st-emotion-cache-xuq335{
   background-image:none !important;background:var(--paper2) !important;border-radius:99px !important;}
 [data-testid="stSlider"] .st-emotion-cache-r1tb5r{background:var(--teal) !important;}
+[data-testid="stSlider"] > div[role="group"]{margin-top:24px !important;}
 [data-testid="stSliderThumbValue"]{
   min-width:26px !important;width:26px !important;left:50% !important;
-  transform:translateX(-50%) !important;top:-32px !important;
+  transform:translateX(-50%) !important;top:-28px !important;
   display:flex !important;align-items:center !important;justify-content:center !important;
   padding:4px 6px !important;border-radius:8px !important;font-size:.78rem !important;font-weight:700 !important;}
 [data-testid="stSliderThumbValue"] p{color:#fff !important;margin:0 !important;font-size:.78rem !important;}
@@ -171,7 +174,8 @@ hr,[data-testid="stDivider"]{border-color:var(--rule) !important;}
 .v2-tag{display:inline-flex;align-items:center;gap:7px;font-size:.72rem;font-weight:700;border-radius:999px;padding:6px 12px;background:var(--teal-soft);color:var(--teal);}
 .v2-tag.warm{background:var(--saffron-soft);color:#95631A;}
 .v2-tag .dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
-.v2-heat{display:grid;grid-template-columns:34px repeat(24,1fr);gap:3px;align-items:center;}
+.v2-scroll{overflow-x:auto;overflow-y:hidden;padding-bottom:6px;-webkit-overflow-scrolling:touch;}
+.v2-heat{display:grid;grid-template-columns:34px repeat(24,1fr);gap:3px;align-items:center;min-width:540px;}
 .v2-heat .rowlab{font-size:.64rem;color:var(--soft);font-weight:600;}
 .v2-cell{height:15px;border-radius:3px;background:var(--teal-soft);}
 .v2-cell.now{outline:1.5px solid var(--saffron);outline-offset:1px;}
@@ -208,25 +212,42 @@ hr,[data-testid="stDivider"]{border-color:var(--rule) !important;}
   pointer-events:none;white-space:nowrap;}
 .v2-hud b{font-family:'Fraunces',serif;font-size:1.15rem;color:var(--ink);font-variant-numeric:tabular-nums;}
 .v2-hud .hud-peak{color:var(--saffron);font-weight:700;}
-@media(max-width:760px){
-  [data-testid="stHorizontalBlock"]:has(#v2-controls) > div[data-testid="stColumn"]:last-child{
-    position:static !important;max-height:none !important;overflow:visible !important;}
-  .v2-hud{bottom:8px;padding:7px 14px;font-size:.68rem;}
-}
 .v2-footer{text-align:center;color:var(--soft);font-size:.7rem;margin-top:54px;padding-top:20px;border-top:1px solid var(--rule);}
 @keyframes v2-rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .v2-hero{animation:v2-rise .9s cubic-bezier(.22,1,.36,1) both;}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important;}}
-@media(max-width:1000px){
-  [data-testid="stMainBlockContainer"]{padding:24px 20px 70px !important;}
+
+/* ---------- Responsive: tablet ---------- */
+@media(max-width:1100px){
+  [data-testid="stMainBlockContainer"]{padding:24px 24px 80px !important;}
   .v2-hero{grid-template-columns:1fr;gap:28px;}
+  .v2-hero .v2-live{max-width:560px;}
+}
+/* Stack every control sub-column instead of squeezing widgets */
+@media(max-width:900px){
+  [data-testid="stHorizontalBlock"]:has(#v2-controls){flex-wrap:wrap !important;}
+  [data-testid="stHorizontalBlock"]:has(#v2-controls) > div[data-testid="stColumn"],
+  [data-testid="stHorizontalBlock"]:has(#v2-controls) [data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]{
+    width:100% !important;max-width:100% !important;flex:1 1 100% !important;}
+  [data-testid="stHorizontalBlock"]:has(#v2-controls) [data-testid="stHorizontalBlock"]{flex-wrap:wrap !important;}
+}
+/* ---------- Responsive: phone ---------- */
+@media(max-width:760px){
+  [data-testid="stHorizontalBlock"]:has(#v2-controls) > div[data-testid="stColumn"]:last-child{
+    position:static !important;max-height:none !important;overflow:visible !important;}
+  .v2-hud{left:8px;right:8px;bottom:8px;transform:none;border-radius:16px;
+    justify-content:center;flex-wrap:wrap;white-space:normal;text-align:center;gap:4px 12px;padding:8px 14px;}
 }
 @media(max-width:680px){
-  .v2-hero h1{font-size:2.5rem;}
+  [data-testid="stMainBlockContainer"]{padding:18px 14px 110px !important;}
+  [data-testid="stLayoutWrapper"] > div[data-testid="stVerticalBlock"]{padding:18px !important;border-radius:14px !important;}
+  .v2-hero h1{font-size:2.4rem;}
   .v2-masthead{flex-direction:column;align-items:flex-start;gap:12px;}
   .v2-rank{grid-template-columns:1fr 55px;}
   .v2-rank .track{grid-column:1/-1;grid-row:2;}
-  .v2-heat,.v2-heat-axis{grid-template-columns:28px repeat(12,1fr);}
+  .v2-heat,.v2-heat-axis{min-width:540px;}
+  .v2-bars{height:130px;}
+  .v2-live{padding:20px;}
 }
 </style>
 """
@@ -322,8 +343,10 @@ def heatmap(matrix, row_labels, selected_col: int) -> None:
         )
         rows.append(f'<div class="rowlab">{_html.escape(lab)}</div>{cells}')
     st.html(f"""
-<div class="v2-heat">{''.join(rows)}</div>
-<div class="v2-heat-axis"><span></span>{''.join(f'<span>{h:02d}</span>' if h in (0,3,6,9,12,15,18,21,23) else '<span></span>' for h in range(24))}</div>""")
+<div class="v2-scroll">
+  <div class="v2-heat">{''.join(rows)}</div>
+  <div class="v2-heat-axis"><span></span>{''.join(f'<span>{h:02d}</span>' if h in (0,3,6,9,12,15,18,21,23) else '<span></span>' for h in range(24))}</div>
+</div>""")
 
 
 def compare(labels, values, selected: int) -> None:
