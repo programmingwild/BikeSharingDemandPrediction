@@ -20,6 +20,8 @@ v2.inject()
 SEASONS = {1: "Winter", 2: "Spring", 3: "Summer", 4: "Fall"}
 WEATHER = {1: "Clear", 2: "Mist", 3: "Light rain / snow", 4: "Heavy rain / snow"}
 DOW = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+REQUIRED_COLUMNS = ["datetime", "season", "holiday", "workingday", "weather",
+                    "temp", "atemp", "humidity", "windspeed"]
 PRESETS = {
     "Morning rush": dict(date="2012-06-15", hour=8, season=3, weather=1, workingday=1, t_c=20.0, hum=60, wind=10),
     "Evening rush": dict(date="2012-06-15", hour=18, season=3, weather=1, workingday=1, t_c=24.0, hum=55, wind=12),
@@ -68,6 +70,22 @@ def forecast(date_str, season, holiday, workingday, weather, temp, atemp, hum, w
     return [float(np.expm1(model.predict(row_for(date_str, h, season, holiday, workingday,
                                                weather, temp, atemp, hum, wind)[FEATURES])[0]))
             for h in range(24)]
+
+
+def score_upload(file):
+    """Validate and score an uploaded CSV, raising friendly ValueError messages."""
+    raw = pd.read_csv(file)
+    missing = [c for c in REQUIRED_COLUMNS if c not in raw.columns]
+    if missing:
+        raise ValueError("Missing columns: " + ", ".join(missing))
+    raw["datetime"] = pd.to_datetime(raw["datetime"], errors="coerce")
+    if raw["datetime"].isna().any():
+        raise ValueError("Some datetime values could not be read.")
+    if raw.empty:
+        raise ValueError("The file has no rows.")
+    df = add_features(raw)
+    preds = np.expm1(model.predict(df[FEATURES])).clip(min=0).round().astype(int)
+    return pd.DataFrame({"datetime": df["datetime"], "count": preds})
 
 
 v2.masthead()
@@ -216,13 +234,18 @@ elif page == "Batch":
         with st.container(border=True):
             f = st.file_uploader("Upload a CSV", type=["csv"])
             if f is not None:
-                df = add_features(pd.read_csv(f, parse_dates=["datetime"]))
-                preds = np.expm1(model.predict(df[FEATURES])).clip(min=0).round().astype(int)
-                out = pd.DataFrame({"datetime": df["datetime"], "count": preds})
-                st.caption(f"{len(out):,} rows scored · average {preds.mean():.0f} · peak {preds.max():,}")
-                st.dataframe(out.head(15), use_container_width=True, hide_index=True)
-                st.download_button("Download predictions", out.to_csv(index=False),
-                                   "submission.csv", use_container_width=True, type="primary")
+                try:
+                    out = score_upload(f)
+                except ValueError as exc:
+                    st.error(f"Could not score that file: {exc}")
+                except Exception as exc:
+                    st.error(f"Could not read that file: {exc}")
+                else:
+                    st.caption(f"{len(out):,} rows scored · average {out['count'].mean():.0f} · "
+                               f"peak {out['count'].max():,}")
+                    st.dataframe(out.head(15), use_container_width=True, hide_index=True)
+                    st.download_button("Download predictions", out.to_csv(index=False),
+                                       "submission.csv", use_container_width=True, type="primary")
 
 
 elif page == "Insights":

@@ -20,7 +20,7 @@ CSS = r"""
 :root{
   --paper:#F7F4ED; --paper2:#EDE8DC; --card:#FFFEFB; --ink:#16231F; --soft:#55665F;
   --rule:rgba(22,35,31,.14); --rule2:rgba(22,35,31,.28);
-  --teal:#0E6B5E; --teal-soft:rgba(14,107,94,.10); --saffron:#D99A2B; --saffron-soft:rgba(217,154,43,.14);
+  --teal:#0E6B5E; --teal-soft:rgba(14,107,94,.10); --saffron:#D99A2B; --saffron-text:#8A5A0B; --saffron-soft:rgba(217,154,43,.14);
 }
 html,body,[class*="st-emotion-cache"]{font-family:'Manrope',system-ui,sans-serif !important;color:var(--ink) !important;}
 body{background:var(--paper) !important;}
@@ -158,7 +158,7 @@ hr,[data-testid="stDivider"]{border-color:var(--rule) !important;}
 .v2-live .number{font-family:'Fraunces',serif;font-size:clamp(3.4rem,6vw,5rem);line-height:1;letter-spacing:-.06em;color:var(--ink);margin:10px 0 0;font-variant-numeric:tabular-nums;}
 .v2-live .unit{font-family:'Manrope',sans-serif;font-size:.82rem;color:var(--soft);margin-left:8px;letter-spacing:0;}
 .v2-live .foot{border-top:1px solid var(--rule);margin-top:18px;padding-top:14px;display:flex;justify-content:space-between;font-size:.75rem;color:var(--soft);}
-.v2-live .foot b{color:var(--saffron);font-weight:700;}
+.v2-live .foot b{color:var(--saffron-text);font-weight:700;}
 .v2-section{display:flex;align-items:baseline;gap:18px;margin:16px 0 20px;}
 .v2-section h2{font-family:'Fraunces',serif;font-size:1.55rem;font-weight:500;margin:0;letter-spacing:-.04em;}
 .v2-section .line{flex:1;height:1px;background:var(--rule);}
@@ -211,7 +211,7 @@ hr,[data-testid="stDivider"]{border-color:var(--rule) !important;}
   box-shadow:0 18px 44px -26px rgba(22,35,31,.55);font-size:.75rem;color:var(--soft);
   pointer-events:none;white-space:nowrap;}
 .v2-hud b{font-family:'Fraunces',serif;font-size:1.15rem;color:var(--ink);font-variant-numeric:tabular-nums;}
-.v2-hud .hud-peak{color:var(--saffron);font-weight:700;}
+.v2-hud .hud-peak{color:var(--saffron-text);font-weight:700;}
 .v2-footer{text-align:center;color:var(--soft);font-size:.7rem;margin-top:54px;padding-top:20px;border-top:1px solid var(--rule);}
 @keyframes v2-rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .v2-hero{animation:v2-rise .9s cubic-bezier(.22,1,.36,1) both;}
