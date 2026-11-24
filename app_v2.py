@@ -1,7 +1,7 @@
-"""Metro Demand Studio — a separate premium UI. Streamlit is the backend.
+"""BikeShare Demand Studio — premium UI backed by Streamlit.
 
-This file does not touch streamlit_app.py. Deploy by setting Streamlit Cloud's
-"Main file path" to app_v2.py, or run locally with: streamlit run app_v2.py
+Run locally with: streamlit run app_v2.py
+The live entrypoint (streamlit_app.py) imports this module.
 """
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
@@ -13,7 +13,7 @@ import joblib
 from src.features import add_features
 import ui_v2 as v2
 
-st.set_page_config(page_title="Metro · Demand Studio", page_icon="🚇",
+st.set_page_config(page_title="BikeShare · Demand Studio", page_icon="🚲",
                    layout="wide", initial_sidebar_state="collapsed")
 v2.inject()
 
@@ -285,5 +285,5 @@ else:
         st.code("pip install -r requirements-dev.txt\npython src/train.py\n"
                 "python src/predict.py\nstreamlit run app_v2.py", language="bash")
 
-st.html('<div class="v2-footer">metro demand studio · Capital Bikeshare 2011–2012 · '
-        'a separate UI backed by the same Streamlit model</div>')
+st.html('<div class="v2-footer">BikeShare demand studio · Capital Bikeshare 2011–2012 · '
+        'built with Streamlit</div>')

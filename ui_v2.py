@@ -1,4 +1,4 @@
-"""Design system for the separate Metro Demand Studio UI.
+"""Design system for the BikeShare Demand Studio UI.
 
 Warm editorial paper, forest ink, fine rules, Fraunces display type.
 Completely independent of streamlit_app.py and ui.py.
@@ -269,7 +269,7 @@ def masthead(status: str = "model online · RMSLE 0.53") -> None:
 <div class="v2-masthead">
   <div class="v2-brand">
     <div class="v2-logo"><i></i><i></i><i></i></div>
-    <strong>metro</strong><span>demand studio</span>
+    <strong>BikeShare</strong><span>demand studio</span>
   </div>
   <div class="v2-status"><b></b>{_html.escape(status)}</div>
 </div>""")

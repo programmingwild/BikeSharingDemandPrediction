@@ -1,36 +1,29 @@
-# Metro Demand Studio — new UI
+# BikeShare Demand Studio
 
-This is a **separate** UI. `streamlit_app.py` is left untouched.
-
-- `app_v2.py` — the new app entrypoint (Streamlit is the backend: it loads
-  `src/model.pkl`, runs predictions and serves the page).
-- `ui_v2.py` — its independent design system (HTML/CSS only, no new packages).
+The redesigned UI is in `app_v2.py` with its design system in `ui_v2.py`.
+`streamlit_app.py` is the live entrypoint and simply imports `app_v2.py`, so
+Streamlit Community Cloud serves the new UI at the existing app URL.
 
 ## Run locally
 
 ```bash
 pip install -r requirements.txt
-streamlit run app_v2.py
+streamlit run streamlit_app.py     # or: streamlit run app_v2.py
 ```
 
-## Deploy on Streamlit Community Cloud
+## Deploy
 
-The GitHub repo already has a deployed Streamlit app. To deploy this UI instead
-without deleting the old one:
+Push to `main`. Streamlit Cloud rebuilds from `streamlit_app.py` automatically.
+No dashboard setting changes are needed.
 
-1. Open your app in Streamlit Community Cloud → **Manage app**.
-2. Go to **Settings → Main file path** and change it from
-   `streamlit_app.py` to `app_v2.py`.
-3. Save. Streamlit rebuilds and serves the new UI.
+Pages can also be deep-linked: `?page=Forecast`, `?page=Batch`,
+`?page=Insights`, `?page=About`.
 
-To go back, set the main file path back to `streamlit_app.py`.
+## What changed
 
-## What is different
-
-- Warm editorial paper theme with Fraunces display type (completely different
-  from the original Streamlit look).
-- Top navigation instead of a sidebar.
-- Live forecast hero with a 24-hour bar field generated from model output.
-- Week heatmap: 7 days × 24 hours, 168 live predictions.
-- Weather sensitivity comparison and a plain-language fleet note.
-- Batch scoring, data insights and model leaderboard.
+- Stores the full UI in `app_v2.py` / `ui_v2.py`, leaving the model and data
+  code (`src/`, `data/`) untouched.
+- Dark/light theme-safe editorial paper design with Fraunces display type,
+  bento cards, sticky results panel and a live bottom-right readout.
+- Live hourly forecast, 7×24 heatmap, weather sensitivity, fleet note,
+  batch scoring, data insights and leaderboard.
