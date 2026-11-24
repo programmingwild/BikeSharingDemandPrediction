@@ -117,39 +117,37 @@ if page == "Forecast":
         st.html('<div id="v2-controls" style="height:0"></div>')
         with st.container(border=True):
             v2.label("01 · WHEN")
-            picked = st.date_input("Date", value=pd.to_datetime(s["in_date"]).date(), key="in_date")
+            picked = st.date_input("Date", key="in_date")
             d_str = pd.to_datetime(picked).strftime("%Y-%m-%d")
             dow = pd.to_datetime(d_str).dayofweek
-            hour = st.slider("Hour", 0, 23, int(s["in_hour"]), key="in_hour")
+            hour = st.slider("Hour", 0, 23, key="in_hour")
             st.caption(f"{DOW[dow]} · " + ("weekend" if dow >= 5 else "weekday"))
 
             v2.label("02 · DAY TYPE")
             v2.label("Season")
             season = st.radio("Season", [1, 2, 3, 4], horizontal=True,
-                              index=[1, 2, 3, 4].index(int(s["in_season"])),
                               format_func=lambda x: SEASONS[x], label_visibility="collapsed",
                               key="in_season")
             v2.label("Weather")
             weather = st.radio("Weather", [1, 2, 3, 4], horizontal=True,
-                               index=[1, 2, 3, 4].index(int(s["in_weather"])),
                                format_func=lambda x: WEATHER[x], label_visibility="collapsed",
                                key="in_weather")
             v2.label("Holiday")
             holiday = st.radio("Holiday", [0, 1], horizontal=True,
-                               index=int(s["in_holiday"]),
                                format_func=lambda x: "Yes" if x else "No", label_visibility="collapsed",
                                key="in_holiday")
             wd_auto = 0 if (holiday == 1 or dow >= 5) else 1
             v2.label("Working day")
+            if "in_workingday" not in s:
+                s["in_workingday"] = wd_auto
             workingday = st.radio("Working day", [0, 1], horizontal=True,
-                                  index=int(s["in_workingday"]) if "in_workingday" in s else wd_auto,
                                   format_func=lambda x: "Yes" if x else "No", label_visibility="collapsed",
                                   key="in_workingday")
 
             v2.label("03 · CONDITIONS")
-            t_c = st.slider("Temperature °C", -8.0, 39.0, float(s["in_t"]), key="in_t")
-            hum = st.slider("Humidity %", 0, 100, int(s["in_hum"]), key="in_hum")
-            wind = st.slider("Wind", 0, 67, int(s["in_wind"]), key="in_wind")
+            t_c = st.slider("Temperature °C", -8.0, 39.0, key="in_t")
+            hum = st.slider("Humidity %", 0, 100, key="in_hum")
+            wind = st.slider("Wind", 0, 67, key="in_wind")
             at_c = t_c + 2.0
             s["in_at"] = at_c
 
